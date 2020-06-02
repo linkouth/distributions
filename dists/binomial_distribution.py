@@ -23,18 +23,7 @@ def get_distribution(m, a, b, x_arr):
     return result
 
 
-def handle():
-    n = input().strip().split(' ')
-    m, a, b = int(n[0][3:]), float(n[1][3:]), int(n[2][3:])
-    x_arr = []
-    buffer_string = input().strip()
-    while buffer_string != '':
-        try:
-            x_arr.append(int(buffer_string))
-            buffer_string = input().strip()
-        except Exception as e:
-            break
-
+def handle(m, a, b, x_arr):
     dist = get_distribution(m=m, a=a, b=b, x_arr=x_arr)
     list_to_print = [int(x) for x in dist]
     for x in list_to_print:

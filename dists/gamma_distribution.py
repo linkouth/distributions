@@ -32,18 +32,7 @@ def get_distribution(m, a, b, c, x_arr):
     return result
 
 
-def handle():
-    n = input().strip().split(' ')
-    m, a, b, c = int(n[0][3:]), int(n[1][3:]), float(n[2][3:]), float(n[3][3:])
-    x_arr = []
-    buffer_string = input().strip()
-    while buffer_string != '':
-        try:
-            x_arr.append(int(buffer_string))
-            buffer_string = input().strip()
-        except Exception as e:
-            break
-
+def handle(m, a, b, c, x_arr):
     dist = get_distribution(m=m, a=a, b=b, c=c, x_arr=x_arr)
     list_to_print = [floor(x * 1000) / 1000 if x > 0 else ceil(x * 1000) / 1000 for x in dist]
     for x in list_to_print:
