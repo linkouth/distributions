@@ -24,7 +24,7 @@ def main():
     parser.add_argument('-m', help='Parameter m')
     parser.add_argument('-a', help='Parameter a')
     parser.add_argument('-b', help='Parameter b')
-
+    parser.add_argument('-c', help='Parameter c')
 
     args = parser.parse_args()
     dist_type = str(args.d).lower()
@@ -37,83 +37,110 @@ def main():
     if dist_type == Dists.ST.value:
         with open(args.f, 'r') as file:
             x_arr = [int(line.strip()) for line in file.readlines()]
-            standard_distribution.handle(
+            dist = standard_distribution.handle(
                 m=m,
                 x_arr=x_arr
             )
+            with open('st_output.txt', 'w') as output:
+                for d in dist:
+                    output.write(f'{d}\n')
     elif dist_type == Dists.UN.value:
         with open(args.f, 'r') as file:
             x_arr = [int(line.strip()) for line in file.readlines()]
-            uniform_distribution.handle(
+            dist = uniform_distribution.handle(
                 m=m,
                 a=int(args.a),
                 b=int(args.b),
                 x_arr=x_arr
             )
+            with open('un_output.txt', 'w') as output:
+                for d in dist:
+                    output.write(f'{d}\n')
     elif dist_type == Dists.TR.value:
         with open(args.f, 'r') as file:
             x_arr = [int(line.strip()) for line in file.readlines()]
-            triangle_distribution.handle(
+            dist = triangle_distribution.handle(
                 m=m,
                 a=int(args.a),
                 b=int(args.b),
                 x_arr=x_arr
             )
+            with open('tr_output.txt', 'w') as output:
+                for d in dist:
+                    output.write(f'{d}\n')
     elif dist_type == Dists.EX.value:
         with open(args.f, 'r') as file:
             x_arr = [int(line.strip()) for line in file.readlines()]
-            exponential_distribution.handle(
+            dist = exponential_distribution.handle(
                 m=m,
                 a=int(args.a),
                 b=int(args.b),
                 x_arr=x_arr
             )
+            with open('ex_output.txt', 'w') as output:
+                for d in dist:
+                    output.write(f'{d}\n')
     elif dist_type == Dists.NR.value:
         with open(args.f, 'r') as file:
             x_arr = [int(line.strip()) for line in file.readlines()]
-            normal_distribution.handle(
+            dist = normal_distribution.handle(
                 m=m,
                 a=int(args.a),
                 b=int(args.b),
                 x_arr=x_arr
             )
+            with open('nr_output.txt', 'w') as output:
+                for d in dist:
+                    output.write(f'{d}\n')
     elif dist_type == Dists.GM.value:
         with open(args.f, 'r') as file:
             x_arr = [int(line.strip()) for line in file.readlines()]
-            gamma_distribution.handle(
+            dist = gamma_distribution.handle(
                 m=m,
                 a=int(args.a),
                 b=float(args.b),
                 c=float(args.c),
                 x_arr=x_arr
             )
+            with open('gm_output.txt', 'w') as output:
+                for d in dist:
+                    output.write(f'{d}\n')
     elif dist_type == Dists.LN.value:
         with open(args.f, 'r') as file:
             x_arr = [int(line.strip()) for line in file.readlines()]
-            lognorm_distribution.handle(
+            dist = lognorm_distribution.handle(
                 m=m,
                 a=int(args.a),
                 b=int(args.b),
                 x_arr=x_arr
             )
+            with open('ln_output.txt', 'w') as output:
+                for d in dist:
+                    output.write(f'{d}\n')
     elif dist_type == Dists.LS.value:
         with open(args.f, 'r') as file:
             x_arr = [int(line.strip()) for line in file.readlines()]
-            logistic_distibution.handle(
+            dist = logistic_distibution.handle(
                 m=m,
                 a=int(args.a),
                 b=int(args.b),
                 x_arr=x_arr
             )
+            with open('ls_output.txt', 'w') as output:
+                for d in dist:
+                    output.write(f'{d}\n')
     elif dist_type == Dists.BI.value:
         with open(args.f, 'r') as file:
             x_arr = [int(line.strip()) for line in file.readlines()]
-            binomial_distribution.handle(
+            dist = binomial_distribution.handle(
                 m=m,
                 a=float(args.a),
                 b=int(args.b),
                 x_arr=x_arr
             )
+            with open('bi_output.txt', 'w') as output:
+                for d in dist:
+                    output.write(f'{d}\n')
 
 
 if __name__ == '__main__':

@@ -35,5 +35,4 @@ def get_distribution(m, a, b, c, x_arr):
 def handle(m, a, b, c, x_arr):
     dist = get_distribution(m=m, a=a, b=b, c=c, x_arr=x_arr)
     list_to_print = [floor(x * 1000) / 1000 if x > 0 else ceil(x * 1000) / 1000 for x in dist]
-    for x in list_to_print:
-        print(x)
+    return list_to_print
