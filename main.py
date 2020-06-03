@@ -1,5 +1,6 @@
 import argparse
 from enum import Enum
+from collections import namedtuple
 
 from dists import uniform_distribution, logistic_distibution, binomial_distribution, lognorm_distribution, \
     normal_distribution, triangle_distribution, exponential_distribution, gamma_distribution, standard_distribution
@@ -17,9 +18,47 @@ class Dists(Enum):
     BI = 'bi'
 
 
+def parse_data(args):
+    if args.m is None:
+        m = 10000
+    else:
+        m = int(args.m)
+
+    x_arr = []
+    if args.f is None:
+        print('Press Enter if you want compute the distribution')
+        print('Input the sequance: ')
+        buffer_string = input().strip()
+        while buffer_string != '':
+            try:
+                x_arr.append(int(buffer_string))
+                buffer_string = input().strip()
+            except Exception as e:
+                break
+    else:
+        with open(args.f, 'r') as file:
+            for line in file.readlines():
+                x_arr.append(int(line.strip()))
+
+    Data = namedtuple('Data', ['m', 'a', 'b', 'c', 'x_arr', 'o'])
+
+    return Data(m=m, a=args.a, b=args.b, c=args.c, x_arr=x_arr, o=args.o)
+
+
+def output_data(arr, path):
+    if path is None:
+        for a in arr:
+            print(f"{a}")
+    else:
+        with open(path, 'w') as output:
+            for a in arr:
+                output.write(f'{a}\n')
+
+
 def main():
     parser = argparse.ArgumentParser(description='Bringing the PRN sequence to the specified distribution')
     parser.add_argument('-f', help='Path to file with input sequance')
+    parser.add_argument('-o', help='Path to output file')
     parser.add_argument('-d', type=str, help='Type of the specific distribution')
     parser.add_argument('-m', help='Parameter m')
     parser.add_argument('-a', help='Parameter a')
@@ -29,118 +68,79 @@ def main():
     args = parser.parse_args()
     dist_type = str(args.d).lower()
 
-    if args.m is None:
-        m = 10000
-    else:
-        m = int(args.m)
+    input_data = parse_data(args)
 
     if dist_type == Dists.ST.value:
-        with open(args.f, 'r') as file:
-            x_arr = [int(line.strip()) for line in file.readlines()]
-            dist = standard_distribution.handle(
-                m=m,
-                x_arr=x_arr
-            )
-            with open('st_output.txt', 'w') as output:
-                for d in dist:
-                    output.write(f'{d}\n')
+        dist = standard_distribution.handle(
+            m=input_data.m,
+            x_arr=input_data.x_arr
+        )
+        output_data(dist, input_data.o)
     elif dist_type == Dists.UN.value:
-        with open(args.f, 'r') as file:
-            x_arr = [int(line.strip()) for line in file.readlines()]
-            dist = uniform_distribution.handle(
-                m=m,
-                a=int(args.a),
-                b=int(args.b),
-                x_arr=x_arr
-            )
-            with open('un_output.txt', 'w') as output:
-                for d in dist:
-                    output.write(f'{d}\n')
+        dist = uniform_distribution.handle(
+            m=input_data.m,
+            a=int(input_data.a),
+            b=int(input_data.b),
+            x_arr=input_data.x_arr
+        )
+        output_data(dist, input_data.o)
     elif dist_type == Dists.TR.value:
-        with open(args.f, 'r') as file:
-            x_arr = [int(line.strip()) for line in file.readlines()]
-            dist = triangle_distribution.handle(
-                m=m,
-                a=int(args.a),
-                b=int(args.b),
-                x_arr=x_arr
-            )
-            with open('tr_output.txt', 'w') as output:
-                for d in dist:
-                    output.write(f'{d}\n')
+        dist = triangle_distribution.handle(
+            m=input_data.m,
+            a=int(input_data.a),
+            b=int(input_data.b),
+            x_arr=input_data.x_arr
+        )
+        output_data(dist, input_data.o)
     elif dist_type == Dists.EX.value:
-        with open(args.f, 'r') as file:
-            x_arr = [int(line.strip()) for line in file.readlines()]
-            dist = exponential_distribution.handle(
-                m=m,
-                a=int(args.a),
-                b=int(args.b),
-                x_arr=x_arr
-            )
-            with open('ex_output.txt', 'w') as output:
-                for d in dist:
-                    output.write(f'{d}\n')
+        dist = exponential_distribution.handle(
+            m=input_data.m,
+            a=int(input_data.a),
+            b=int(input_data.b),
+            x_arr=input_data.x_arr
+        )
+        output_data(dist, input_data.o)
     elif dist_type == Dists.NR.value:
-        with open(args.f, 'r') as file:
-            x_arr = [int(line.strip()) for line in file.readlines()]
-            dist = normal_distribution.handle(
-                m=m,
-                a=int(args.a),
-                b=int(args.b),
-                x_arr=x_arr
-            )
-            with open('nr_output.txt', 'w') as output:
-                for d in dist:
-                    output.write(f'{d}\n')
+        dist = normal_distribution.handle(
+            m=input_data.m,
+            a=int(input_data.a),
+            b=int(input_data.b),
+            x_arr=input_data.x_arr
+        )
+        output_data(dist, input_data.o)
     elif dist_type == Dists.GM.value:
-        with open(args.f, 'r') as file:
-            x_arr = [int(line.strip()) for line in file.readlines()]
-            dist = gamma_distribution.handle(
-                m=m,
-                a=int(args.a),
-                b=float(args.b),
-                c=float(args.c),
-                x_arr=x_arr
-            )
-            with open('gm_output.txt', 'w') as output:
-                for d in dist:
-                    output.write(f'{d}\n')
+        dist = gamma_distribution.handle(
+            m=input_data.m,
+            a=int(input_data.a),
+            b=float(input_data.b),
+            c=float(input_data.c),
+            x_arr=input_data.x_arr
+        )
+        output_data(dist, input_data.o)
     elif dist_type == Dists.LN.value:
-        with open(args.f, 'r') as file:
-            x_arr = [int(line.strip()) for line in file.readlines()]
-            dist = lognorm_distribution.handle(
-                m=m,
-                a=int(args.a),
-                b=int(args.b),
-                x_arr=x_arr
-            )
-            with open('ln_output.txt', 'w') as output:
-                for d in dist:
-                    output.write(f'{d}\n')
+        dist = lognorm_distribution.handle(
+            m=input_data.m,
+            a=int(input_data.a),
+            b=int(input_data.b),
+            x_arr=input_data.x_arr
+        )
+        output_data(dist, input_data.o)
     elif dist_type == Dists.LS.value:
-        with open(args.f, 'r') as file:
-            x_arr = [int(line.strip()) for line in file.readlines()]
-            dist = logistic_distibution.handle(
-                m=m,
-                a=int(args.a),
-                b=int(args.b),
-                x_arr=x_arr
-            )
-            with open('ls_output.txt', 'w') as output:
-                for d in dist:
-                    output.write(f'{d}\n')
+        dist = logistic_distibution.handle(
+            m=input_data.m,
+            a=int(input_data.a),
+            b=int(input_data.b),
+            x_arr=input_data.x_arr
+        )
+        output_data(dist, input_data.o)
     elif dist_type == Dists.BI.value:
-        with open(args.f, 'r') as file:
-            x_arr = [int(line.strip()) for line in file.readlines()]
-            dist = binomial_distribution.handle(
-                m=m,
-                a=float(args.a),
-                b=int(args.b),
-                x_arr=x_arr
-            )
-            with open('bi_output.txt', 'w') as output:
-                for d in dist:
-                    output.write(f'{d}\n')
+        dist = binomial_distribution.handle(
+            m=input_data.m,
+            a=float(input_data.a),
+            b=int(input_data.b),
+            x_arr=input_data.x_arr
+        )
+        output_data(dist, input_data.o)
 
 
 if __name__ == '__main__':
